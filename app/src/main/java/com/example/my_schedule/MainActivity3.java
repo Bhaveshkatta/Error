@@ -120,9 +120,6 @@ public class MainActivity3 extends AppCompatActivity {
                 Date date= new Date();
                 Calendar cal_aLarm = Calendar.getInstance();
 
-
-
-
                 Calendar cal_now =  Calendar.getInstance();
                 cal_now.setTime(date);
                 cal_aLarm.setTime(date);
@@ -136,18 +133,14 @@ public class MainActivity3 extends AppCompatActivity {
                     ActivityCompat.requestPermissions(MainActivity3.this, PERMUISSION, CONTACT_PERMISSION_CODE);
                 }
 
-                Intent intent = new Intent(MainActivity3.this, BroadCastReciever.class);
-                intent.putExtra("phnoe", contacteditext.getText().toString());
-                intent.putExtra("Message", Event3.getText().toString());
-                sendBroadcast(intent);
-
                 int fd = (int) Calendar.getInstance().getTimeInMillis();
                 Intent i =  new Intent(MainActivity3.this, BroadCastReciever.class);
-                i.putExtra("MyMessage",Event3.getText().toString());
-                i.putExtra("phone", contacteditext.getText().toString());
                 PendingIntent pendingInte =  PendingIntent.getBroadcast(MainActivity3.this, fd, i , PendingIntent.FLAG_UPDATE_CURRENT);
                 alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal_aLarm.getTimeInMillis(), pendingInte);
 
+
+                Intent intent = new Intent(MainActivity3.this, MainActivity2.class);
+                startActivity(intent);
             }
         });
 
@@ -234,32 +227,20 @@ public class MainActivity3 extends AppCompatActivity {
         String e3 = Event3.getText().toString();
 //        String CB = checkBox.getText().toString();
 //        String CB2 = checkBox2.getText().toString();
-        String CB = "false", CB2 = "true";
-        if (checkBox.isChecked() ){
-            CB = "true";
-            CB2 = "false";
+
+
+        if (phoneNumber.isEmpty() || name.isEmpty() || calendar.isEmpty() || time.isEmpty() || e3.isEmpty() ){
+            Toast.makeText(this, "Please Insert Required Information Carefully !", Toast.LENGTH_SHORT).show();
         }
-        else if (checkBox2.isChecked() ){
-            CB2 = "true";
-            CB = "false";
+        else{
+            Boolean dd= dataBase.insertData(phoneNumber, name, calendar, time, e1, e2, e3);
+            if(dd==true){
+                Toast.makeText(MainActivity3.this,"Inserted Data",Toast.LENGTH_SHORT ).show();
+            }
+            else {
+                Toast.makeText(MainActivity3.this,"User data insertion failed",Toast.LENGTH_SHORT ).show();
+            }
         }
-        else {
-            CB2 = "true";
-            CB = "false";
-        }
-
-
-
-        Boolean dd= dataBase.insertData(phoneNumber, name, calendar, time, e1, e2, e3, CB, CB2);
-        if(dd==true){
-            Toast.makeText(MainActivity3.this,"Inserted Data",Toast.LENGTH_SHORT ).show();
-        }
-        else {
-            Toast.makeText(MainActivity3.this,"User data insertion failed",Toast.LENGTH_SHORT ).show();
-
-
-        }
-
 
     }
 
@@ -323,6 +304,20 @@ public class MainActivity3 extends AppCompatActivity {
         }
     }
 
+
+//    public void sendMessage(){
+//        DataBase database = new DataBase(MainActivity3.this);
+//        Cursor cursorl =
+//                database.readall();
+//        cursorl.moveToLast();
+//        String phone = cursorl.getString(0);
+//        String message = cursorl.getString(6);
+//        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("https://api.whatsapp.com/send?phone=" + phone +
+//                "&text=" + message));
+//        startActivity(i);
+//    }
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -380,3 +375,4 @@ public class MainActivity3 extends AppCompatActivity {
 
 
 }
+

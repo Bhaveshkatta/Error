@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.app.AlarmManager;
 import android.content.Context;
@@ -34,21 +35,10 @@ public class MainActivity2 extends AppCompatActivity {
     private ArrayList<String> phoneNumber, name, calendar, time, e1, e2, e3;
     DataBase dataBase;
 
-    //private MyAdapter adapter;
     DatabaseReference databaseReference;
-    //  databas = FirebaseDatabase.getInstance().getReference("/");
-    // databas = FirebaseDatabase.getInstance().getReference().child("Add");
 
 
     FloatingActionButton buttonf;
-
-
-//    @Override
-//    public void onBackPressed() {
-//        super.onBackPressed();
-//        startActivity(new Intent(MainActivity2.this, MainActivity3.class));
-//        finish();
-//    }
 
 
     @Override
@@ -65,30 +55,23 @@ public class MainActivity2 extends AppCompatActivity {
         recycleView = findViewById(R.id.recycleview);
         adaptetr adaptetr = new adaptetr(this,name, calendar, e1);
         recycleView.setAdapter(adaptetr);
+        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swiperefershlayocut);
+        swipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        displayAllDat();
+                        adaptetr.notifyDataSetChanged();
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                }
+        );
         recycleView.setLayoutManager(new LinearLayoutManager(this));
 
 
-    //    databaseReference = FirebaseDatabase.getInstance().getReference("users");
 
-
-//        databaseReference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                for(DataSnapshot dataSnapshot: snapshot.getChildren()){
-//                    Modalclass user = dataSnapshot.getValue(Modalclass.class);
-//                    list.add(user);
-//                }
-//                adapter.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
 
         Intent intent = new Intent(MainActivity2.this, MainActivity3.class);
-// bekar names rakhna band kar
 
         buttonf.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,15 +135,4 @@ public class MainActivity2 extends AppCompatActivity {
 //MySMSservice.startActionWHATSAPP(getApplicationContext (), text_message.getText().toString(),text_count.getText().toString(), result);
 
 
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        adapter.startListening();
-//    }
-//
-//    @Override
-//    protected void onStop() {
-//        super.onStop();
-//        adapter.stopListening();
-//    }
 }

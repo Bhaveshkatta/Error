@@ -18,24 +18,13 @@ public class BroadCastReciever extends BroadcastReceiver {
         String phone = cursorl.getString(0);
         String message = cursorl.getString(6);
         Toast.makeText(context, cursorl.getString(0), Toast.LENGTH_SHORT).show();
-       if (Boolean.parseBoolean(cursorl.getString(7)) ) {
-            Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("https://api.whatsapp.com/send?phone=" + phone +
-                    "&text=" + message));
-            context.startActivity(i);
 
-        }
 
-        else if (Boolean.parseBoolean(cursorl.getString(8))) {
+//            MainActivity3 mainActivity3 = new MainActivity3();
+//            mainActivity3.sendMessage();
 
             SmsManager smsManager = SmsManager.getDefault();
             smsManager.sendTextMessage(phone, null, message, null, null);
-        }
-
-        else {
-            SmsManager smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage(phone, null, message, null, null);
-        }
-
 
     }
 }

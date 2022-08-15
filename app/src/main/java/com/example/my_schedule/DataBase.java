@@ -19,7 +19,7 @@ public class DataBase extends SQLiteOpenHelper {
     }
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String sql  = "CREATE TABLE PRODUCTS(NAME TEXT, PHONENUMBER TEXT, CALENDAR TEXT, TIME TEXT, E1 TEXT, E2 TEXT, E3 TEXT, CHECKBOX TEXT, CHECKBOX2 TEXT)";
+        String sql  = "CREATE TABLE PRODUCTS(NAME TEXT, PHONENUMBER TEXT, CALENDAR TEXT, TIME TEXT, E1 TEXT, E2 TEXT, E3 TEXT)";
         sqLiteDatabase.execSQL(sql);
     }
 
@@ -31,7 +31,7 @@ public class DataBase extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
 
-    public boolean insertData(String name, String phoneNumber, String calendar, String time, String e1, String e2, String e3, String CB, String CB2){
+    public boolean insertData(String name, String phoneNumber, String calendar, String time, String e1, String e2, String e3){
         SQLiteDatabase sqLiteDatabase= this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("NAME",name);
@@ -41,8 +41,7 @@ public class DataBase extends SQLiteOpenHelper {
         values.put("E1",e1);
         values.put("E2",e2);
         values.put("E3",e3);
-        values.put("CHECKBOX", CB);
-        values.put("CHECKBOX2", CB2);
+
         long e= sqLiteDatabase.insert("PRODUCTS", null, values);
         if (e == -1){
             return false;
@@ -55,5 +54,5 @@ public class DataBase extends SQLiteOpenHelper {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         Cursor cursor = sqLiteDatabase.rawQuery("Select * from PRODUCTS", null);
         return cursor;
-    }   
+    }
 }
